@@ -10,9 +10,6 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-        {{-- Flowbite --}}
-        <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
-
         <!-- Styles / Scripts -->
         @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
             @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -27,93 +24,35 @@
         <div class="p-6 flex flex-col gap-6 max-w-7xl mx-auto">
             <div class="">
                 <h1 class="text-2xl font-semibold">
-                    Produk Di Jual
+                    Ubah
                 </h1>
             </div>
 
-            <div class="flex flex-col gap-6">
-                @foreach ($products as $product)
-                    <div class="bg-gray-100 border my-4 p-4 rounded-lg shadow-[0px 14px 34px 0px rgba(0,0,0,0.08)] dark:bg-zinc-900 dark:text-white/70 flex justify-between gap-6">
+            <div>
+
+                <form action="{{ route('product.update', $product->id) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+
+                    <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <h1 class="text-xl font-semibold">{{ $product->name }}</h1>
-                            <p class="text-xs mt-2"><span class="bg-gray-900 text-white py-0.5 px-2 rounded">{{ $product->category->name }}</span></p>
-                            <p class="text-2xl mt-4 font-extrabold">Rp. {{ number_format($product->price, 0, ',', '.') }}</p>
+                            <label for="name" class="block text-sm">Nama</label>
+                            <input type="text" name="name" id="name" value="{{ $product->name }}" class="w-full rounded-md p-3 bg-white dark:bg-zinc-900 dark:text-white/70" />
                         </div>
-
                         <div>
-                            <div class="flex gap-2">
-                                <a href="{{ route('product.edit', [$product->id]) }}" class="bg-gray-900 text-white px-4 py-1 hover:bg-gray-700 rounded">Ubah</a>
-
-
-
-                                <!-- Modal toggle -->
-                                <button data-modal-target="default-modal{{ $product->id }}" data-modal-toggle="default-modal{{ $product->id }}" class="bg-red-700 text-white px-4 py-1 hover:bg-red-500 rounded" type="button">
-                                    Hapus
-                                </button>
-
-                                <!-- Main modal -->
-                                <div id="default-modal{{ $product->id }}" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                                    <div class="relative p-4 w-full max-w-2xl max-h-full">
-                                        <!-- Modal content -->
-                                        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                                            <!-- Modal header -->
-                                            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                                                    Anda Yakin Ingin Menghapus data ini?
-                                                </h3>
-                                                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="default-modal{{ $product->id }}">
-                                                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                                                    </svg>
-                                                    <span class="sr-only">Close modal</span>
-                                                </button>
-                                            </div>
-
-                                            <!-- Modal body -->
-                                            <div class="p-4 md:p-5 space-y-4">
-                                                <form action="{{ route('product.destroy', [$product->id]) }}" method="post">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button data-modal-hide="default-modal{{ $product->id }}" type="submit" class="bg-red-700 text-white px-4 py-1 hover:bg-red-500 rounded">Ya</button>
-
-                                                    <button data-modal-hide="default-modal{{ $product->id }}" type="button" class="bg-gray-700 text-white px-4 py-1 hover:bg-gray-500 rounded">Batal</button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
+                            <label for="price" class="block text-sm">Harga</label>
+                            <input type="number" min="0" name="price" id="price" value="{{ $product->price}}" class="w-full rounded-md p-3 bg-white dark:bg-zinc-900 dark:text-white/70" />
                         </div>
                     </div>
-                @endforeach
-            </div>
 
-            <div class="mt-6">
-                {{ $products->links() }}
+                    <div class="mt-6">
+                        <button type="submit" class="w-full bg-#FF2D20 text-white rounded-md p-3 bg-gray-900">Simpan</button>
+                    </div>
+                </form>
             </div>
 
 
 
         </div>
-
-        {{-- Flowbite --}}
-        <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
-
-        {{-- Sweet Alert --}}
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-        {{-- JQuery --}}
-        <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-
-        <script>
-            // Swal.fire({
-            //     position: "top-end",
-            //     icon: "success",
-            //     title: "Your work has been saved",
-            //     showConfirmButton: false,
-            //     timer: 1500
-            // });
-        </script>
     </body>
 </html>
