@@ -46,8 +46,11 @@
 
                         <div>
                             <!-- Modal toggle -->
-                            <button data-modal-target="status-modal" data-modal-toggle="status-modal" class="bg-red-700 text-white px-4 py-1 hover:bg-red-500 rounded h-100" type="button">
-                                Tambah
+                            <button data-modal-target="status-modal" data-modal-toggle="status-modal" class="bg-red-700 text-white px-4 py-1 hover:bg-red-500 rounded h-100 flex gap-2 items-center" type="button">
+                                <i class='bx bx-plus font-bold'></i>
+                                <span>
+                                    Tambah
+                                </span>
                             </button>
                         </div>
                     </div>
@@ -90,12 +93,22 @@
 
                 <!-- Modal body -->
                 <div class="p-4 md:p-5 space-y-4">
-                    <form action="" method="post">
+                    <form action="{{ route('category.store') }}" method="post">
                         @csrf
                         @method('POST')
-                        <button data-modal-hide="category-modal" type="submit" class="bg-red-700 text-white px-4 py-1 hover:bg-red-500 rounded">Ya</button>
 
-                        <button data-modal-hide="category-modal" type="button" class="bg-gray-700 text-white px-4 py-1 hover:bg-gray-500 rounded">Batal</button>
+                        <div class="flex flex-col gap-4 w-100">
+                            <div>
+                                <label for="name" class="block text-sm">Nama</label>
+                                <input type="text" name="name" id="name" class="w-full rounded-md p-3 bg-white dark:bg-zinc-900 dark:text-white/70" placeholder="Masukan Nama"/>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 flex justify-end gap-2">
+                            <button data-modal-hide="category-modal" type="submit" class="bg-gray-900 text-white px-4 py-1 hover:bg-gray-700 rounded">Simpan</button>
+
+                            <button data-modal-hide="category-modal" type="button" class="bg-gray-700 text-white px-4 py-1 hover:bg-gray-500 rounded">Batal</button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -122,12 +135,22 @@
 
                 <!-- Modal body -->
                 <div class="p-4 md:p-5 space-y-4">
-                    <form action="" method="post">
+                    <form action="{{ route('status.store') }}" method="post">
                         @csrf
                         @method('POST')
-                        <button data-modal-hide="status-modal" type="submit" class="bg-red-700 text-white px-4 py-1 hover:bg-red-500 rounded">Ya</button>
 
-                        <button data-modal-hide="status-modal" type="button" class="bg-gray-700 text-white px-4 py-1 hover:bg-gray-500 rounded">Batal</button>
+                        <div class="flex flex-col gap-4 w-100">
+                            <div>
+                                <label for="name" class="block text-sm">Nama</label>
+                                <input type="text" name="name" id="name" class="w-full rounded-md p-3 bg-white dark:bg-zinc-900 dark:text-white/70" placeholder="Masukan Nama"/>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 flex justify-end gap-2">
+                            <button data-modal-hide="category-modal" type="submit" class="bg-gray-900 text-white px-4 py-1 hover:bg-gray-700 rounded">Simpan</button>
+
+                            <button data-modal-hide="category-modal" type="button" class="bg-gray-700 text-white px-4 py-1 hover:bg-gray-500 rounded">Batal</button>
+                        </div>
                     </form>
                 </div>
             </div>

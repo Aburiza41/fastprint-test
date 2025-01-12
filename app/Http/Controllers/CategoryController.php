@@ -2,27 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
 use Illuminate\Http\Request;
-use App\Models\Product;
-use App\Models\Status;
+use App\Models\Category;
 
-class ProductController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+        // Debugging
+        // dd('Index Kategori');
 
         // Get Products
-        $products = Product::with(['status', 'category'])
-            ->orderBy('created_at', 'desc')
+        $categories = Category::orderBy('created_at', 'desc')
             ->paginate(5);
 
         // dd($products);
         // Mengirim data ke view
-        return view('products.index', compact('products'));
+        return view('categories.index', compact('categories'));
     }
 
     /**
@@ -30,14 +29,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        // Get all categories
-        $categories = Category::all();
-
-        // Get all statuses
-        $statuses = Status::all();
-
-        // Return the edit view with the product
-        return view('products.create', compact(['categories', 'statuses']));
+        //
     }
 
     /**
@@ -48,13 +40,10 @@ class ProductController extends Controller
         // Validate the request
         $request->validate([
             'name' => 'required',
-            'price' => 'required',
-            'category_id' => 'required',
-            'status_id' => 'required',
         ]);
 
         // Create a new product
-        Product::create($request->all());
+        Category::create($request->all());
 
         // Redirect to the products index
         return redirect()->back();
@@ -73,17 +62,7 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        // Get all categories
-        $categories = Category::all();
-
-        // Get all statuses
-        $statuses = Status::all();
-
-        // Find the product
-        $product = Product::find($id);
-
-        // Return the edit view with the product
-        return view('products.edit', compact(['product', 'categories', 'statuses']));
+        //
     }
 
     /**
@@ -94,16 +73,13 @@ class ProductController extends Controller
         // Validate the request
         $request->validate([
             'name' => 'required',
-            'price' => 'required',
-            'category_id' => 'required',
-            'status_id' => 'required',
         ]);
 
         // Find the product
-        $product = Product::find($id);
+        $category = Category::find($id);
 
         // Update the product
-        $product->update($request->all());
+        $category->update($request->all());
 
         // Redirect to the products index
         return redirect()->back();
@@ -115,10 +91,15 @@ class ProductController extends Controller
     public function destroy(string $id)
     {
         // Find the product
-        $product = Product::find($id);
+        $category = Category::find($id);
+
+        foreach($category->products as $product){
+            // Delete the product
+            $product->delete();
+        }
 
         // Delete the product
-        $product->delete();
+        $category->delete();
 
         // Redirect to the products index
         return redirect()->back();
