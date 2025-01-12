@@ -2,11 +2,16 @@
 
     <div class="p-6 flex flex-col gap-6 max-w-7xl mx-auto">
         <div class="flex justify-between">
-            <h1 class="text-2xl font-semibold">
-                Produk Di Jual
-            </h1>
+            <div>
+                <h1 class="text-2xl font-semibold">
+                    Beranda
+                </h1>
+                <p>Menampilkan Data Produk dengan Status : <span>"Bisa Dijual"</span></p>
+            </div>
 
-            <a href="{{ route('product.create') }}" class="bg-gray-900 text-white px-4 py-1 hover:bg-gray-700 rounded">Tambah</a>
+            <div>
+                <a href="{{ route('product.create') }}" class="bg-gray-900 text-white px-4 py-1 hover:bg-gray-700 rounded">Tambah</a>
+            </div>
         </div>
 
         <div class="flex flex-col gap-6">
