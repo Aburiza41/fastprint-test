@@ -27,6 +27,7 @@ class GuestController extends Controller
         // Get Products
         $products = Product::with(['status', 'category'])
             ->where('status_id', $status->id)
+            ->orderBy('created_at', 'desc')
             ->paginate(5);
 
         // dd($products);

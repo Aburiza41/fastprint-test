@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Status;
 
 class ProductController extends Controller
 {
@@ -20,7 +22,14 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        // Get all categories
+        $categories = Category::all();
+
+        // Get all statuses
+        $statuses = Status::all();
+
+        // Return the edit view with the product
+        return view('products.create', compact(['categories', 'statuses']));
     }
 
     /**
@@ -28,7 +37,19 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validate the request
+        $request->validate([
+            'name' => 'required',
+            'price' => 'required',
+            'category_id' => 'required',
+            'status_id' => 'required',
+        ]);
+
+        // Create a new product
+        Product::create($request->all());
+
+        // Redirect to the products index
+        return redirect()->back();
     }
 
     /**
@@ -44,11 +65,17 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
+        // Get all categories
+        $categories = Category::all();
+
+        // Get all statuses
+        $statuses = Status::all();
+
         // Find the product
         $product = Product::find($id);
 
         // Return the edit view with the product
-        return view('products.edit', compact('product'));
+        return view('products.edit', compact(['product', 'categories', 'statuses']));
     }
 
     /**
@@ -56,6 +83,14 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        // Validate the request
+        $request->validate([
+            'name' => 'required',
+            'price' => 'required',
+            'category_id' => 'required',
+            'status_id' => 'required',
+        ]);
+
         // Find the product
         $product = Product::find($id);
 
