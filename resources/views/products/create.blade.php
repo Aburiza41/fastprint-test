@@ -7,13 +7,11 @@
         </div>
 
         <div>
-
-            <form action="{{ route('product.store') }}" method="POST">
+            <form id="productForm" action="{{ route('product.store') }}" method="POST">
                 @csrf
                 @method('POST')
 
                 <div class="grid grid-cols gap-4">
-
                     <div class="flex gap-6 items-end w-full">
                         <div class="w-full">
                             <label for="category_id" class="block text-sm">Kategori</label>
@@ -23,18 +21,13 @@
                                 @endforeach
                             </select>
                         </div>
-
                         <div>
-                            <!-- Modal toggle -->
                             <button data-modal-target="category-modal" data-modal-toggle="category-modal" class="bg-red-700 text-white px-4 py-1 hover:bg-red-500 rounded h-100 flex gap-2 items-center" type="button">
                                 <i class='bx bx-plus font-bold'></i>
-                                <span>
-                                    Tambah
-                                </span>
+                                <span>Tambah</span>
                             </button>
                         </div>
                     </div>
-
 
                     <div class="flex gap-6 items-end w-full">
                         <div class="w-full">
@@ -45,32 +38,29 @@
                                 @endforeach
                             </select>
                         </div>
-
                         <div>
-                            <!-- Modal toggle -->
                             <button data-modal-target="status-modal" data-modal-toggle="status-modal" class="bg-red-700 text-white px-4 py-1 hover:bg-red-500 rounded h-100 flex gap-2 items-center" type="button">
                                 <i class='bx bx-plus font-bold'></i>
-                                <span>
-                                    Tambah
-                                </span>
+                                <span>Tambah</span>
                             </button>
                         </div>
                     </div>
 
                     <div>
                         <label for="name" class="block text-sm">Nama</label>
-                        <input type="text" name="name" id="name" class="w-full rounded-md p-3 bg-white dark:bg-zinc-900 dark:text-white/70" />
+                        <input type="text" name="name" id="name" class="w-full rounded-md p-3 bg-white dark:bg-zinc-900 dark:text-white/70 validate-input" placeholder="Masukan Nama" required/>
                     </div>
                     <div>
                         <label for="price" class="block text-sm">Harga</label>
-                        <input type="number" min="0" name="price" id="price" class="w-full rounded-md p-3 bg-white dark:bg-zinc-900 dark:text-white/70" />
+                        <input type="number" min="0" name="price" id="price" class="w-full rounded-md p-3 bg-white dark:bg-zinc-900 dark:text-white/70 validate-input" placeholder="Masukan Harga" required/>
                     </div>
                 </div>
 
                 <div class="mt-6">
-                    <button type="submit" class="w-full bg-#FF2D20 text-white rounded-md p-3 bg-gray-900">Simpan</button>
+                    <button type="submit" id="submitButton" class="w-full bg-gray-900 text-white rounded-md p-3">Simpan</button>
                 </div>
             </form>
+
         </div>
     </div>
 
@@ -158,4 +148,56 @@
             </div>
         </div>
     </div>
+
+    <x-slot name="footer">
+        <script>
+            const form = document.getElementById('productForm');
+            const inputs = document.querySelectorAll('.validate-input');
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                let isValid = true;
+
+                inputs.forEach(input => {
+                    if (input.value.trim() === '') {
+                        input.classList.add('border-red-500');
+                        input.classList.remove('border-green-500');
+                        isValid = false;
+                    } else {
+                        input.classList.add('border-green-500');
+                        input.classList.remove('border-red-500');
+                    }
+                });
+
+                if (!isValid) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Harap isi semua data yang diperlukan!',
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Sukses',
+                        text: 'Data berhasil ditambahkan!',
+                    }).then(() => {
+                        form.submit(); // Kirim form ke server
+                    });
+                }
+            });
+
+            inputs.forEach(input => {
+                input.addEventListener('input', () => {
+                    if (input.value.trim() === '') {
+                        input.classList.add('border-red-500');
+                        input.classList.remove('border-green-500');
+                    } else {
+                        input.classList.add('border-green-500');
+                        input.classList.remove('border-red-500');
+                    }
+                });
+            });
+        </script>
+    </x-slot>
 </x-app-layout>

@@ -8,7 +8,7 @@
 
         <div>
 
-            <form action="{{ route('product.update', $product->id) }}" method="POST">
+            <form id="productForm" action="{{ route('product.update', $product->id) }}" method="POST">
                 @csrf
                 @method('PUT')
 
@@ -57,16 +57,16 @@
 
                     <div>
                         <label for="name" class="block text-sm">Nama</label>
-                        <input type="text" name="name" id="name" value="{{ $product->name }}" class="w-full rounded-md p-3 bg-white dark:bg-zinc-900 dark:text-white/70" />
+                        <input type="text" name="name" id="name" value="{{ $product->name }}" class="w-full rounded-md p-3 bg-white dark:bg-zinc-900 dark:text-white/70 validate-input" placeholder="Masukan Nama" required/>
                     </div>
                     <div>
                         <label for="price" class="block text-sm">Harga</label>
-                        <input type="number" min="0" name="price" id="price" value="{{ $product->price}}" class="w-full rounded-md p-3 bg-white dark:bg-zinc-900 dark:text-white/70" />
+                        <input type="number" min="0" name="price" id="price" value="{{ $product->price}}" class="w-full rounded-md p-3 bg-white dark:bg-zinc-900 dark:text-white/70 validate-input" placeholder="Masukan Harga" required step="1"/>
                     </div>
                 </div>
 
                 <div class="mt-6">
-                    <button type="submit" class="w-full bg-#FF2D20 text-white rounded-md p-3 bg-gray-900">Simpan</button>
+                    <button type="submit" class="w-full text-white rounded-md p-3 bg-gray-900">Simpan</button>
                 </div>
             </form>
         </div>
@@ -156,4 +156,57 @@
             </div>
         </div>
     </div>
+
+
+    <x-slot name="footer">
+        <script>
+            const form = document.getElementById('productForm');
+            const inputs = document.querySelectorAll('.validate-input');
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                let isValid = true;
+
+                inputs.forEach(input => {
+                    if (input.value.trim() === '') {
+                        input.classList.add('border-red-500');
+                        input.classList.remove('border-green-500');
+                        isValid = false;
+                    } else {
+                        input.classList.add('border-green-500');
+                        input.classList.remove('border-red-500');
+                    }
+                });
+
+                if (!isValid) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Harap isi semua data yang diperlukan!',
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Sukses',
+                        text: 'Data berhasil ditambahkan!',
+                    }).then(() => {
+                        form.submit(); // Kirim form ke server
+                    });
+                }
+            });
+
+            inputs.forEach(input => {
+                input.addEventListener('input', () => {
+                    if (input.value.trim() === '') {
+                        input.classList.add('border-red-500');
+                        input.classList.remove('border-green-500');
+                    } else {
+                        input.classList.add('border-green-500');
+                        input.classList.remove('border-red-500');
+                    }
+                });
+            });
+        </script>
+    </x-slot>
 </x-app-layout>
