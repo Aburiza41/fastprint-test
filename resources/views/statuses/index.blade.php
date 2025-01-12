@@ -13,8 +13,25 @@
                     Tambah
                 </span>
             </button>
+        </div>
 
+        <div class="p-4 bg-gray-100 rounded-md shadow-md">
+            <form method="GET" action="{{ route('status.index') }}" class="flex flex-col gap-4 md:flex-row md:items-end">
+                {{-- Pencarian --}}
+                <div class="flex flex-col flex-grow">
+                    <label for="search" class="mb-1 text-sm font-medium text-gray-700">Pencarian</label>
+                    <input type="text" name="search" id="search" value="{{ request('search') }}"
+                        placeholder="Cari..."
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+                </div>
 
+                {{-- Tombol Cari --}}
+                <div class="flex">
+                    <button type="submit" class="px-4 py-2 text-white bg-blue-500 rounded-md shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <i class="bx bx-search"></i> Cari
+                    </button>
+                </div>
+            </form>
         </div>
 
         <div class="flex flex-col gap-6">

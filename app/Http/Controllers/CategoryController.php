@@ -10,14 +10,18 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         // Debugging
         // dd('Index Kategori');
 
         // Get Products
         $categories = Category::orderBy('created_at', 'desc')
+            ->orWhere('name', 'like', '%' . $request->search . '%')
             ->paginate(5);
+
+        // Append the search parameter
+        $categories->appends($request->only('search'));
 
         // dd($products);
         // Mengirim data ke view

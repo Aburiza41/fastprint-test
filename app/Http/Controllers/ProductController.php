@@ -12,17 +12,42 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        // Ambil parameter pencarian dan filter
+        $search = $request->input('search');
+        $categoryId = $request->input('category');
 
-        // Get Products
-        $products = Product::with(['status', 'category'])
-            ->orderBy('created_at', 'desc')
-            ->paginate(5);
+        // Query produk
+        $query = Product::with(['status', 'category']);
 
-        // dd($products);
+        // Filter berdasarkan kategori jika ada
+        if ($categoryId) {
+            $query->where('category_id', $categoryId);
+        }
+
+        // Filter berdasarkan pencarian jika ada
+        if ($search) {
+            $query->where('name', 'like', '%' . $search . '%');
+        }
+
+        // Ambil hasil dengan paginasi
+        $products = $query->orderBy('created_at', 'desc')->paginate(5);
+
+        // Tambahkan parameter pencarian dan kategori ke pagination
+        $products->appends($request->only(['search', 'category']));
+
+        // Ambil semua kategori untuk filter
+        $categories = Category::all();
+
+        // Loop kategori untuk menambahkan jumlah produk dengan status bisa dijual di setiap kategori
+        foreach ($categories as $category) {
+            $category->product_count = Product::where('category_id', $category->id)
+                ->count();
+        }
+
         // Mengirim data ke view
-        return view('products.index', compact('products'));
+        return view('products.index', compact('products', 'categories'));
     }
 
     /**

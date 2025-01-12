@@ -14,6 +14,39 @@
             </div>
         </div>
 
+        <div class="p-4 bg-gray-100 rounded-md shadow-md">
+            <form method="GET" action="{{ route('guest.index') }}" class="flex flex-col gap-4 md:flex-row md:items-end">
+                {{-- Filter Kategori --}}
+                <div class="flex flex-col">
+                    <label for="category" class="mb-1 text-sm font-medium text-gray-700">Filter Kategori</label>
+                    <select name="category" id="category" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        <option value="">Semua : {{ $products->total() }} Produk</option>
+                        @foreach ($categories as $category)
+                            <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
+                                {{ $category->name }} : {{ $category->product_count }} Produk
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                {{-- Pencarian --}}
+                <div class="flex flex-col flex-grow">
+                    <label for="search" class="mb-1 text-sm font-medium text-gray-700">Pencarian</label>
+                    <input type="text" name="search" id="search" value="{{ request('search') }}"
+                        placeholder="Cari..."
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+                </div>
+
+                {{-- Tombol Cari --}}
+                <div class="flex">
+                    <button type="submit" class="px-4 py-2 text-white bg-blue-500 rounded-md shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <i class="bx bx-search"></i> Cari
+                    </button>
+                </div>
+            </form>
+        </div>
+
+
         <div class="flex flex-col gap-6">
             @foreach ($products as $product)
                 <div class="bg-gray-100 border my-4 p-4 rounded-lg shadow-[0px 14px 34px 0px rgba(0,0,0,0.08)] dark:bg-zinc-900 dark:text-white/70 flex justify-between gap-6">

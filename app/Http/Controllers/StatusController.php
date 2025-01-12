@@ -10,11 +10,15 @@ class StatusController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         // Get Products
         $statuses = Status::orderBy('created_at', 'desc')
+            ->orWhere('name', 'like', '%' . $request->search . '%')
             ->paginate(5);
+
+        // Append the search parameter
+        $statuses->appends($request->only('search'));
 
         // dd($products);
         // Mengirim data ke view
